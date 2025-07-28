@@ -1,4 +1,4 @@
-package slogrus
+package logrus
 
 import (
 	"bytes"
@@ -15,7 +15,7 @@ func TestNewTextLogger(t *testing.T) {
 		t.Error("NewTextLogger() returned nil")
 		return
 	}
-	if logger.out != &buf {
+	if logger.Out != &buf {
 		t.Error("NewTextLogger() did not set output correctly")
 	}
 }
@@ -28,7 +28,7 @@ func TestNewJSONLogger(t *testing.T) {
 		t.Error("NewJSONLogger() returned nil")
 		return
 	}
-	if logger.out != &buf {
+	if logger.Out != &buf {
 		t.Error("NewJSONLogger() did not set output correctly")
 	}
 
@@ -206,11 +206,11 @@ func TestSetOutput(t *testing.T) {
 }
 
 func TestSetLevel(t *testing.T) {
-	// Test setting level
+	// Test setting Level
 	SetLevel(DebugLevel)
 
-	if StandardLogger().GetLevel() != DebugLevel {
-		t.Errorf("SetLevel() did not set level correctly, got %v, want %v",
-			StandardLogger().GetLevel(), DebugLevel)
+	if StandardLogger().Level != DebugLevel {
+		t.Errorf("SetLevel() did not set Level correctly, got %v, want %v",
+			StandardLogger().Level, DebugLevel)
 	}
 }

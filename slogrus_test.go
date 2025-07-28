@@ -1,4 +1,4 @@
-package slogrus
+package logrus
 
 import (
 	"testing"

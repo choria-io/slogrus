@@ -1,4 +1,4 @@
-package slogrus
+package logrus
 
 import (
 	"io"
@@ -18,7 +18,7 @@ func NewTextLogger(w io.Writer, opts *slog.HandlerOptions) *Logger {
 	}
 	handler := slog.NewTextHandler(w, opts)
 
-	// Determine our internal level based on slog handler level
+	// Determine our internal Level based on slog handler Level
 	var internalLevel Level = InfoLevel
 	if opts.Level != nil {
 		switch {
@@ -40,9 +40,10 @@ func NewTextLogger(w io.Writer, opts *slog.HandlerOptions) *Logger {
 	}
 
 	return &Logger{
-		slogger: slog.New(handler),
-		level:   internalLevel,
-		out:     w,
+		slogger:   slog.New(handler),
+		Level:     internalLevel,
+		Out:       w,
+		Formatter: &TextFormatter{},
 	}
 }
 
@@ -58,7 +59,7 @@ func NewJSONLogger(w io.Writer, opts *slog.HandlerOptions) *Logger {
 	}
 	handler := slog.NewJSONHandler(w, opts)
 
-	// Determine our internal level based on slog handler level
+	// Determine our internal Level based on slog handler Level
 	var internalLevel Level = InfoLevel
 	if opts.Level != nil {
 		switch {
@@ -80,9 +81,10 @@ func NewJSONLogger(w io.Writer, opts *slog.HandlerOptions) *Logger {
 	}
 
 	return &Logger{
-		slogger: slog.New(handler),
-		level:   internalLevel,
-		out:     w,
+		slogger:   slog.New(handler),
+		Level:     internalLevel,
+		Out:       w,
+		Formatter: &JSONFormatter{},
 	}
 }
 
@@ -91,17 +93,20 @@ func NewJSONLogger(w io.Writer, opts *slog.HandlerOptions) *Logger {
 func SetFormatter(formatter Formatter) {
 	var handler slog.Handler
 	opts := &slog.HandlerOptions{
-		Level: standardLogger.level.toSlogLevel(),
+		Level: standardLogger.Level.toSlogLevel(),
 	}
 
 	switch formatter.(type) {
 	case *TextFormatter:
-		handler = slog.NewTextHandler(standardLogger.out, opts)
+		handler = slog.NewTextHandler(standardLogger.Out, opts)
+		standardLogger.Formatter = formatter
 	case *JSONFormatter:
-		handler = slog.NewJSONHandler(standardLogger.out, opts)
+		handler = slog.NewJSONHandler(standardLogger.Out, opts)
+		standardLogger.Formatter = formatter
 	default:
 		// Default to text handler
-		handler = slog.NewTextHandler(standardLogger.out, opts)
+		handler = slog.NewTextHandler(standardLogger.Out, opts)
+		standardLogger.Formatter = &TextFormatter{}
 	}
 
 	standardLogger.slogger = slog.New(handler)
@@ -146,16 +151,18 @@ func (f *JSONFormatter) Format(entry *Entry) ([]byte, error) {
 func SetReportCaller(include bool) {
 	// Create new handler options with caller reporting
 	opts := &slog.HandlerOptions{
-		Level:     standardLogger.level.toSlogLevel(),
+		Level:     standardLogger.Level.toSlogLevel(),
 		AddSource: include,
 	}
 
 	// Recreate the handler based on current type
 	var handler slog.Handler
 	if _, ok := standardLogger.slogger.Handler().(*slog.JSONHandler); ok {
-		handler = slog.NewJSONHandler(standardLogger.out, opts)
+		handler = slog.NewJSONHandler(standardLogger.Out, opts)
+		standardLogger.Formatter = &JSONFormatter{}
 	} else {
-		handler = slog.NewTextHandler(standardLogger.out, opts)
+		handler = slog.NewTextHandler(standardLogger.Out, opts)
+		standardLogger.Formatter = &TextFormatter{}
 	}
 
 	standardLogger.slogger = slog.New(handler)

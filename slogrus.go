@@ -1,11 +1,11 @@
-package slogrus
+package logrus
 
 import (
 	"io"
 	"log/slog"
 )
 
-// Level represents the level of severity for log events.
+// Level represents the Level of severity for log events.
 // It is compatible with logrus.Level.
 type Level uint32
 
@@ -31,7 +31,7 @@ var AllLevels = []Level{
 	TraceLevel,
 }
 
-// String returns the string representation of the log level.
+// String returns the string representation of the log Level.
 func (level Level) String() string {
 	switch level {
 	case TraceLevel:
@@ -73,7 +73,7 @@ func (level Level) toSlogLevel() slog.Level {
 	return slog.LevelInfo
 }
 
-// ParseLevel parses a level string into a Level value.
+// ParseLevel parses a Level string into a Level value.
 func ParseLevel(lvl string) (Level, error) {
 	switch lvl {
 	case "panic":
@@ -95,7 +95,7 @@ func ParseLevel(lvl string) (Level, error) {
 	}
 }
 
-// ParseError represents an error encountered during level parsing.
+// ParseError represents an error encountered during Level parsing.
 type ParseError struct {
 	msg string
 }
@@ -120,7 +120,7 @@ func SetOutput(out io.Writer) {
 	standardLogger.SetOutput(out)
 }
 
-// SetLevel sets the logging level for the standard logger.
+// SetLevel sets the logging Level for the standard logger.
 func SetLevel(level Level) {
 	standardLogger.SetLevel(level)
 }
@@ -142,141 +142,141 @@ func WithError(err error) *Entry {
 
 // Global logging functions
 
-// Trace logs a message at trace level using the standard logger.
+// Trace logs a message at trace Level using the standard logger.
 func Trace(args ...any) {
 	standardLogger.Trace(args...)
 }
 
-// Debug logs a message at debug level using the standard logger.
+// Debug logs a message at debug Level using the standard logger.
 func Debug(args ...any) {
 	standardLogger.Debug(args...)
 }
 
-// Info logs a message at info level using the standard logger.
+// Info logs a message at info Level using the standard logger.
 func Info(args ...any) {
 	standardLogger.Info(args...)
 }
 
-// Print logs a message at info level using the standard logger (alias for Info).
+// Print logs a message at info Level using the standard logger (alias for Info).
 func Print(args ...any) {
 	standardLogger.Print(args...)
 }
 
-// Warn logs a message at warning level using the standard logger.
+// Warn logs a message at warning Level using the standard logger.
 func Warn(args ...any) {
 	standardLogger.Warn(args...)
 }
 
-// Warning logs a message at warning level using the standard logger (alias for Warn).
+// Warning logs a message at warning Level using the standard logger (alias for Warn).
 func Warning(args ...any) {
 	standardLogger.Warning(args...)
 }
 
-// Error logs a message at error level using the standard logger.
+// Error logs a message at error Level using the standard logger.
 func Error(args ...any) {
 	standardLogger.Error(args...)
 }
 
-// Fatal logs a message at fatal level using the standard logger and exits the program.
+// Fatal logs a message at fatal Level using the standard logger and exits the program.
 func Fatal(args ...any) {
 	standardLogger.Fatal(args...)
 }
 
-// Panic logs a message at panic level using the standard logger and panics.
+// Panic logs a message at panic Level using the standard logger and panics.
 func Panic(args ...any) {
 	standardLogger.Panic(args...)
 }
 
 // Formatted global logging functions
 
-// Tracef logs a formatted message at trace level using the standard logger.
+// Tracef logs a formatted message at trace Level using the standard logger.
 func Tracef(format string, args ...any) {
 	standardLogger.Tracef(format, args...)
 }
 
-// Debugf logs a formatted message at debug level using the standard logger.
+// Debugf logs a formatted message at debug Level using the standard logger.
 func Debugf(format string, args ...any) {
 	standardLogger.Debugf(format, args...)
 }
 
-// Infof logs a formatted message at info level using the standard logger.
+// Infof logs a formatted message at info Level using the standard logger.
 func Infof(format string, args ...any) {
 	standardLogger.Infof(format, args...)
 }
 
-// Printf logs a formatted message at info level using the standard logger (alias for Infof).
+// Printf logs a formatted message at info Level using the standard logger (alias for Infof).
 func Printf(format string, args ...any) {
 	standardLogger.Printf(format, args...)
 }
 
-// Warnf logs a formatted message at warning level using the standard logger.
+// Warnf logs a formatted message at warning Level using the standard logger.
 func Warnf(format string, args ...any) {
 	standardLogger.Warnf(format, args...)
 }
 
-// Warningf logs a formatted message at warning level using the standard logger (alias for Warnf).
+// Warningf logs a formatted message at warning Level using the standard logger (alias for Warnf).
 func Warningf(format string, args ...any) {
 	standardLogger.Warningf(format, args...)
 }
 
-// Errorf logs a formatted message at error level using the standard logger.
+// Errorf logs a formatted message at error Level using the standard logger.
 func Errorf(format string, args ...any) {
 	standardLogger.Errorf(format, args...)
 }
 
-// Fatalf logs a formatted message at fatal level using the standard logger and exits the program.
+// Fatalf logs a formatted message at fatal Level using the standard logger and exits the program.
 func Fatalf(format string, args ...any) {
 	standardLogger.Fatalf(format, args...)
 }
 
-// Panicf logs a formatted message at panic level using the standard logger and panics.
+// Panicf logs a formatted message at panic Level using the standard logger and panics.
 func Panicf(format string, args ...any) {
 	standardLogger.Panicf(format, args...)
 }
 
 // Line global logging functions
 
-// Traceln logs a message at trace level using the standard logger with newline handling.
+// Traceln logs a message at trace Level using the standard logger with newline handling.
 func Traceln(args ...any) {
 	standardLogger.Traceln(args...)
 }
 
-// Debugln logs a message at debug level using the standard logger with newline handling.
+// Debugln logs a message at debug Level using the standard logger with newline handling.
 func Debugln(args ...any) {
 	standardLogger.Debugln(args...)
 }
 
-// Infoln logs a message at info level using the standard logger with newline handling.
+// Infoln logs a message at info Level using the standard logger with newline handling.
 func Infoln(args ...any) {
 	standardLogger.Infoln(args...)
 }
 
-// Println logs a message at info level using the standard logger with newline handling (alias for Infoln).
+// Println logs a message at info Level using the standard logger with newline handling (alias for Infoln).
 func Println(args ...any) {
 	standardLogger.Println(args...)
 }
 
-// Warnln logs a message at warning level using the standard logger with newline handling.
+// Warnln logs a message at warning Level using the standard logger with newline handling.
 func Warnln(args ...any) {
 	standardLogger.Warnln(args...)
 }
 
-// Warningln logs a message at warning level using the standard logger with newline handling (alias for Warnln).
+// Warningln logs a message at warning Level using the standard logger with newline handling (alias for Warnln).
 func Warningln(args ...any) {
 	standardLogger.Warningln(args...)
 }
 
-// Errorln logs a message at error level using the standard logger with newline handling.
+// Errorln logs a message at error Level using the standard logger with newline handling.
 func Errorln(args ...any) {
 	standardLogger.Errorln(args...)
 }
 
-// Fatalln logs a message at fatal level using the standard logger with newline handling and exits the program.
+// Fatalln logs a message at fatal Level using the standard logger with newline handling and exits the program.
 func Fatalln(args ...any) {
 	standardLogger.Fatalln(args...)
 }
 
-// Panicln logs a message at panic level using the standard logger with newline handling and panics.
+// Panicln logs a message at panic Level using the standard logger with newline handling and panics.
 func Panicln(args ...any) {
 	standardLogger.Panicln(args...)
 }
