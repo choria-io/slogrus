@@ -105,7 +105,7 @@ func (e *ParseError) Error() string {
 }
 
 // Fields represents a map of key-value pairs for structured logging.
-type Fields map[string]interface{}
+type Fields map[string]any
 
 // standardLogger is the default logger instance, similar to logrus's global logger.
 var standardLogger = New()
@@ -126,7 +126,7 @@ func SetLevel(level Level) {
 }
 
 // WithField creates an entry with a single field using the standard logger.
-func WithField(key string, value interface{}) *Entry {
+func WithField(key string, value any) *Entry {
 	return standardLogger.WithField(key, value)
 }
 
@@ -143,140 +143,140 @@ func WithError(err error) *Entry {
 // Global logging functions
 
 // Trace logs a message at trace level using the standard logger.
-func Trace(args ...interface{}) {
+func Trace(args ...any) {
 	standardLogger.Trace(args...)
 }
 
 // Debug logs a message at debug level using the standard logger.
-func Debug(args ...interface{}) {
+func Debug(args ...any) {
 	standardLogger.Debug(args...)
 }
 
 // Info logs a message at info level using the standard logger.
-func Info(args ...interface{}) {
+func Info(args ...any) {
 	standardLogger.Info(args...)
 }
 
 // Print logs a message at info level using the standard logger (alias for Info).
-func Print(args ...interface{}) {
+func Print(args ...any) {
 	standardLogger.Print(args...)
 }
 
 // Warn logs a message at warning level using the standard logger.
-func Warn(args ...interface{}) {
+func Warn(args ...any) {
 	standardLogger.Warn(args...)
 }
 
 // Warning logs a message at warning level using the standard logger (alias for Warn).
-func Warning(args ...interface{}) {
+func Warning(args ...any) {
 	standardLogger.Warning(args...)
 }
 
 // Error logs a message at error level using the standard logger.
-func Error(args ...interface{}) {
+func Error(args ...any) {
 	standardLogger.Error(args...)
 }
 
 // Fatal logs a message at fatal level using the standard logger and exits the program.
-func Fatal(args ...interface{}) {
+func Fatal(args ...any) {
 	standardLogger.Fatal(args...)
 }
 
 // Panic logs a message at panic level using the standard logger and panics.
-func Panic(args ...interface{}) {
+func Panic(args ...any) {
 	standardLogger.Panic(args...)
 }
 
 // Formatted global logging functions
 
 // Tracef logs a formatted message at trace level using the standard logger.
-func Tracef(format string, args ...interface{}) {
+func Tracef(format string, args ...any) {
 	standardLogger.Tracef(format, args...)
 }
 
 // Debugf logs a formatted message at debug level using the standard logger.
-func Debugf(format string, args ...interface{}) {
+func Debugf(format string, args ...any) {
 	standardLogger.Debugf(format, args...)
 }
 
 // Infof logs a formatted message at info level using the standard logger.
-func Infof(format string, args ...interface{}) {
+func Infof(format string, args ...any) {
 	standardLogger.Infof(format, args...)
 }
 
 // Printf logs a formatted message at info level using the standard logger (alias for Infof).
-func Printf(format string, args ...interface{}) {
+func Printf(format string, args ...any) {
 	standardLogger.Printf(format, args...)
 }
 
 // Warnf logs a formatted message at warning level using the standard logger.
-func Warnf(format string, args ...interface{}) {
+func Warnf(format string, args ...any) {
 	standardLogger.Warnf(format, args...)
 }
 
 // Warningf logs a formatted message at warning level using the standard logger (alias for Warnf).
-func Warningf(format string, args ...interface{}) {
+func Warningf(format string, args ...any) {
 	standardLogger.Warningf(format, args...)
 }
 
 // Errorf logs a formatted message at error level using the standard logger.
-func Errorf(format string, args ...interface{}) {
+func Errorf(format string, args ...any) {
 	standardLogger.Errorf(format, args...)
 }
 
 // Fatalf logs a formatted message at fatal level using the standard logger and exits the program.
-func Fatalf(format string, args ...interface{}) {
+func Fatalf(format string, args ...any) {
 	standardLogger.Fatalf(format, args...)
 }
 
 // Panicf logs a formatted message at panic level using the standard logger and panics.
-func Panicf(format string, args ...interface{}) {
+func Panicf(format string, args ...any) {
 	standardLogger.Panicf(format, args...)
 }
 
 // Line global logging functions
 
 // Traceln logs a message at trace level using the standard logger with newline handling.
-func Traceln(args ...interface{}) {
+func Traceln(args ...any) {
 	standardLogger.Traceln(args...)
 }
 
 // Debugln logs a message at debug level using the standard logger with newline handling.
-func Debugln(args ...interface{}) {
+func Debugln(args ...any) {
 	standardLogger.Debugln(args...)
 }
 
 // Infoln logs a message at info level using the standard logger with newline handling.
-func Infoln(args ...interface{}) {
+func Infoln(args ...any) {
 	standardLogger.Infoln(args...)
 }
 
 // Println logs a message at info level using the standard logger with newline handling (alias for Infoln).
-func Println(args ...interface{}) {
+func Println(args ...any) {
 	standardLogger.Println(args...)
 }
 
 // Warnln logs a message at warning level using the standard logger with newline handling.
-func Warnln(args ...interface{}) {
+func Warnln(args ...any) {
 	standardLogger.Warnln(args...)
 }
 
 // Warningln logs a message at warning level using the standard logger with newline handling (alias for Warnln).
-func Warningln(args ...interface{}) {
+func Warningln(args ...any) {
 	standardLogger.Warningln(args...)
 }
 
 // Errorln logs a message at error level using the standard logger with newline handling.
-func Errorln(args ...interface{}) {
+func Errorln(args ...any) {
 	standardLogger.Errorln(args...)
 }
 
 // Fatalln logs a message at fatal level using the standard logger with newline handling and exits the program.
-func Fatalln(args ...interface{}) {
+func Fatalln(args ...any) {
 	standardLogger.Fatalln(args...)
 }
 
 // Panicln logs a message at panic level using the standard logger with newline handling and panics.
-func Panicln(args ...interface{}) {
+func Panicln(args ...any) {
 	standardLogger.Panicln(args...)
 }
