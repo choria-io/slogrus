@@ -12,6 +12,7 @@ func TestNew(t *testing.T) {
 	logger := New()
 	if logger == nil {
 		t.Error("New() returned nil")
+		return
 	}
 	if logger.level != InfoLevel {
 		t.Errorf("New() logger level = %v, want %v", logger.level, InfoLevel)
@@ -25,6 +26,7 @@ func TestNewWithHandler(t *testing.T) {
 
 	if logger == nil {
 		t.Error("NewWithHandler() returned nil")
+		return
 	}
 	if logger.level != InfoLevel {
 		t.Errorf("NewWithHandler() logger level = %v, want %v", logger.level, InfoLevel)
@@ -70,6 +72,7 @@ func TestWithField(t *testing.T) {
 
 	if entry == nil {
 		t.Error("WithField() returned nil")
+		return
 	}
 	if len(entry.Data) != 1 {
 		t.Errorf("WithField() entry has %d fields, want 1", len(entry.Data))
@@ -86,6 +89,7 @@ func TestWithFields(t *testing.T) {
 
 	if entry == nil {
 		t.Error("WithFields() returned nil")
+		return
 	}
 	if len(entry.Data) != 2 {
 		t.Errorf("WithFields() entry has %d fields, want 2", len(entry.Data))
@@ -100,11 +104,14 @@ func TestWithFields(t *testing.T) {
 
 func TestWithContext(t *testing.T) {
 	logger := New()
-	ctx := context.WithValue(context.Background(), "test", "value")
+	type testKeyType string
+	const testKey testKeyType = "test"
+	ctx := context.WithValue(context.Background(), testKey, "value")
 	entry := logger.WithContext(ctx)
 
 	if entry == nil {
 		t.Error("WithContext() returned nil")
+		return
 	}
 	if entry.Context != ctx {
 		t.Error("WithContext() did not set context correctly")
@@ -118,6 +125,7 @@ func TestWithError(t *testing.T) {
 
 	if entry == nil {
 		t.Error("WithError() returned nil")
+		return
 	}
 	if len(entry.Data) != 1 {
 		t.Errorf("WithError() entry has %d fields, want 1", len(entry.Data))

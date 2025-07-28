@@ -10,6 +10,7 @@
 
  - Be sure to use `go fmt` to format files
  - Ensure tests are passing regularly using `go test`
+ - Ensure code quality using `staticcheck`
 
 # Writing Tests
 

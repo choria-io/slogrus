@@ -13,6 +13,7 @@ func TestNewTextLogger(t *testing.T) {
 
 	if logger == nil {
 		t.Error("NewTextLogger() returned nil")
+		return
 	}
 	if logger.out != &buf {
 		t.Error("NewTextLogger() did not set output correctly")
@@ -25,6 +26,7 @@ func TestNewJSONLogger(t *testing.T) {
 
 	if logger == nil {
 		t.Error("NewJSONLogger() returned nil")
+		return
 	}
 	if logger.out != &buf {
 		t.Error("NewJSONLogger() did not set output correctly")
