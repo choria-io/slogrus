@@ -5,6 +5,7 @@
  - Tests are written using standard go test Package
  - We commend code inside functions only when the code being commented is not obviously doing what is being commented
  - This project is used at times where allocation and performance really matter, thus ensure code is optimised for those properties
+ - This project prefer to use `any` rather than `interface{}`
 
 # Workflow
 
@@ -109,7 +110,7 @@ if len(entry.Data) == 0 {
 - Context reference (not copy) to avoid allocation
 
 ### Fields Management
-- `Fields` type alias to `map[string]interface{}` for logrus compatibility
+- `Fields` type alias to `map[string]any` for logrus compatibility
 - Copy-on-write semantics for field operations
 - Efficient iteration using range loops over maps
 

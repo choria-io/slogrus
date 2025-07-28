@@ -94,7 +94,7 @@ func (logger *Logger) GetSlogLogger() *slog.Logger {
 }
 
 // WithField creates an entry with a single field.
-func (logger *Logger) WithField(key string, value interface{}) *Entry {
+func (logger *Logger) WithField(key string, value any) *Entry {
 	entry := NewEntry(logger)
 	return entry.WithField(key, value)
 }
@@ -120,7 +120,7 @@ func (logger *Logger) WithError(err error) *Entry {
 // Direct logging methods
 
 // log is the internal logging method
-func (logger *Logger) log(level Level, args ...interface{}) {
+func (logger *Logger) log(level Level, args ...any) {
 	if !logger.IsLevelEnabled(level) {
 		return
 	}
@@ -138,7 +138,7 @@ func (logger *Logger) log(level Level, args ...interface{}) {
 }
 
 // logf is the internal formatted logging method
-func (logger *Logger) logf(level Level, format string, args ...interface{}) {
+func (logger *Logger) logf(level Level, format string, args ...any) {
 	if !logger.IsLevelEnabled(level) {
 		return
 	}
@@ -156,7 +156,7 @@ func (logger *Logger) logf(level Level, format string, args ...interface{}) {
 }
 
 // logln is the internal line logging method
-func (logger *Logger) logln(level Level, args ...interface{}) {
+func (logger *Logger) logln(level Level, args ...any) {
 	if !logger.IsLevelEnabled(level) {
 		return
 	}
@@ -178,140 +178,140 @@ func (logger *Logger) logln(level Level, args ...interface{}) {
 }
 
 // Trace logs a message at trace level.
-func (logger *Logger) Trace(args ...interface{}) {
+func (logger *Logger) Trace(args ...any) {
 	logger.log(TraceLevel, args...)
 }
 
 // Debug logs a message at debug level.
-func (logger *Logger) Debug(args ...interface{}) {
+func (logger *Logger) Debug(args ...any) {
 	logger.log(DebugLevel, args...)
 }
 
 // Info logs a message at info level.
-func (logger *Logger) Info(args ...interface{}) {
+func (logger *Logger) Info(args ...any) {
 	logger.log(InfoLevel, args...)
 }
 
 // Print logs a message at info level (alias for Info).
-func (logger *Logger) Print(args ...interface{}) {
+func (logger *Logger) Print(args ...any) {
 	logger.Info(args...)
 }
 
 // Warn logs a message at warning level.
-func (logger *Logger) Warn(args ...interface{}) {
+func (logger *Logger) Warn(args ...any) {
 	logger.log(WarnLevel, args...)
 }
 
 // Warning logs a message at warning level (alias for Warn).
-func (logger *Logger) Warning(args ...interface{}) {
+func (logger *Logger) Warning(args ...any) {
 	logger.Warn(args...)
 }
 
 // Error logs a message at error level.
-func (logger *Logger) Error(args ...interface{}) {
+func (logger *Logger) Error(args ...any) {
 	logger.log(ErrorLevel, args...)
 }
 
 // Fatal logs a message at fatal level and exits the program.
-func (logger *Logger) Fatal(args ...interface{}) {
+func (logger *Logger) Fatal(args ...any) {
 	logger.log(FatalLevel, args...)
 }
 
 // Panic logs a message at panic level and panics.
-func (logger *Logger) Panic(args ...interface{}) {
+func (logger *Logger) Panic(args ...any) {
 	logger.log(PanicLevel, args...)
 }
 
 // Formatted logging methods
 
 // Tracef logs a formatted message at trace level.
-func (logger *Logger) Tracef(format string, args ...interface{}) {
+func (logger *Logger) Tracef(format string, args ...any) {
 	logger.logf(TraceLevel, format, args...)
 }
 
 // Debugf logs a formatted message at debug level.
-func (logger *Logger) Debugf(format string, args ...interface{}) {
+func (logger *Logger) Debugf(format string, args ...any) {
 	logger.logf(DebugLevel, format, args...)
 }
 
 // Infof logs a formatted message at info level.
-func (logger *Logger) Infof(format string, args ...interface{}) {
+func (logger *Logger) Infof(format string, args ...any) {
 	logger.logf(InfoLevel, format, args...)
 }
 
 // Printf logs a formatted message at info level (alias for Infof).
-func (logger *Logger) Printf(format string, args ...interface{}) {
+func (logger *Logger) Printf(format string, args ...any) {
 	logger.Infof(format, args...)
 }
 
 // Warnf logs a formatted message at warning level.
-func (logger *Logger) Warnf(format string, args ...interface{}) {
+func (logger *Logger) Warnf(format string, args ...any) {
 	logger.logf(WarnLevel, format, args...)
 }
 
 // Warningf logs a formatted message at warning level (alias for Warnf).
-func (logger *Logger) Warningf(format string, args ...interface{}) {
+func (logger *Logger) Warningf(format string, args ...any) {
 	logger.Warnf(format, args...)
 }
 
 // Errorf logs a formatted message at error level.
-func (logger *Logger) Errorf(format string, args ...interface{}) {
+func (logger *Logger) Errorf(format string, args ...any) {
 	logger.logf(ErrorLevel, format, args...)
 }
 
 // Fatalf logs a formatted message at fatal level and exits the program.
-func (logger *Logger) Fatalf(format string, args ...interface{}) {
+func (logger *Logger) Fatalf(format string, args ...any) {
 	logger.logf(FatalLevel, format, args...)
 }
 
 // Panicf logs a formatted message at panic level and panics.
-func (logger *Logger) Panicf(format string, args ...interface{}) {
+func (logger *Logger) Panicf(format string, args ...any) {
 	logger.logf(PanicLevel, format, args...)
 }
 
 // Line logging methods
 
 // Traceln logs a message at trace level with newline handling.
-func (logger *Logger) Traceln(args ...interface{}) {
+func (logger *Logger) Traceln(args ...any) {
 	logger.logln(TraceLevel, args...)
 }
 
 // Debugln logs a message at debug level with newline handling.
-func (logger *Logger) Debugln(args ...interface{}) {
+func (logger *Logger) Debugln(args ...any) {
 	logger.logln(DebugLevel, args...)
 }
 
 // Infoln logs a message at info level with newline handling.
-func (logger *Logger) Infoln(args ...interface{}) {
+func (logger *Logger) Infoln(args ...any) {
 	logger.logln(InfoLevel, args...)
 }
 
 // Println logs a message at info level with newline handling (alias for Infoln).
-func (logger *Logger) Println(args ...interface{}) {
+func (logger *Logger) Println(args ...any) {
 	logger.Infoln(args...)
 }
 
 // Warnln logs a message at warning level with newline handling.
-func (logger *Logger) Warnln(args ...interface{}) {
+func (logger *Logger) Warnln(args ...any) {
 	logger.logln(WarnLevel, args...)
 }
 
 // Warningln logs a message at warning level with newline handling (alias for Warnln).
-func (logger *Logger) Warningln(args ...interface{}) {
+func (logger *Logger) Warningln(args ...any) {
 	logger.Warnln(args...)
 }
 
 // Errorln logs a message at error level with newline handling.
-func (logger *Logger) Errorln(args ...interface{}) {
+func (logger *Logger) Errorln(args ...any) {
 	logger.logln(ErrorLevel, args...)
 }
 
 // Fatalln logs a message at fatal level with newline handling and exits the program.
-func (logger *Logger) Fatalln(args ...interface{}) {
+func (logger *Logger) Fatalln(args ...any) {
 	logger.logln(FatalLevel, args...)
 }
 
 // Panicln logs a message at panic level with newline handling and panics.
-func (logger *Logger) Panicln(args ...interface{}) {
+func (logger *Logger) Panicln(args ...any) {
 	logger.logln(PanicLevel, args...)
 }
