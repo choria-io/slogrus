@@ -1,14 +1,17 @@
-package slogrus
+package logrus
 
 import (
+	"bufio"
 	"context"
 	"fmt"
+	"io"
 	"log/slog"
 	"os"
+	"runtime"
 	"time"
 )
 
-// Package-level context to avoid repeated allocations
+// Package-Level context to avoid repeated allocations
 var backgroundContext = context.Background()
 
 // Entry represents a single log entry, compatible with logrus.Entry.
@@ -21,6 +24,9 @@ type Entry struct {
 
 	// Context holds the context associated with this entry
 	Context context.Context
+
+	// Logger provides access to the logger instance (logrus compatibility)
+	Logger *Logger
 }
 
 // Caller represents caller information for a log entry.
@@ -37,6 +43,7 @@ func NewEntry(logger *Logger) *Entry {
 		Data:    make(Fields, 6),
 		Time:    time.Now(),
 		Context: backgroundContext,
+		Logger:  logger,
 	}
 }
 
@@ -54,6 +61,7 @@ func (entry *Entry) WithField(key string, value any) *Entry {
 		Level:   entry.Level,
 		Caller:  entry.Caller,
 		Context: entry.Context,
+		Logger:  entry.logger,
 	}
 }
 
@@ -73,6 +81,7 @@ func (entry *Entry) WithFields(fields Fields) *Entry {
 		Level:   entry.Level,
 		Caller:  entry.Caller,
 		Context: entry.Context,
+		Logger:  entry.logger,
 	}
 }
 
@@ -204,141 +213,201 @@ func (entry *Entry) logln(level Level, args ...any) {
 	}
 }
 
-// Trace logs a message at trace level.
+// Trace logs a message at trace Level.
 func (entry *Entry) Trace(args ...any) {
 	entry.log(TraceLevel, args...)
 }
 
-// Debug logs a message at debug level.
+// Debug logs a message at debug Level.
 func (entry *Entry) Debug(args ...any) {
 	entry.log(DebugLevel, args...)
 }
 
-// Info logs a message at info level.
+// Info logs a message at info Level.
 func (entry *Entry) Info(args ...any) {
 	entry.log(InfoLevel, args...)
 }
 
-// Print logs a message at info level (alias for Info).
+// Print logs a message at info Level (alias for Info).
 func (entry *Entry) Print(args ...any) {
 	entry.Info(args...)
 }
 
-// Warn logs a message at warning level.
+// Warn logs a message at warning Level.
 func (entry *Entry) Warn(args ...any) {
 	entry.log(WarnLevel, args...)
 }
 
-// Warning logs a message at warning level (alias for Warn).
+// Warning logs a message at warning Level (alias for Warn).
 func (entry *Entry) Warning(args ...any) {
 	entry.Warn(args...)
 }
 
-// Error logs a message at error level.
+// Error logs a message at error Level.
 func (entry *Entry) Error(args ...any) {
 	entry.log(ErrorLevel, args...)
 }
 
-// Fatal logs a message at fatal level and exits the program.
+// Fatal logs a message at fatal Level and exits the program.
 func (entry *Entry) Fatal(args ...any) {
 	entry.log(FatalLevel, args...)
 }
 
-// Panic logs a message at panic level and panics.
+// Panic logs a message at panic Level and panics.
 func (entry *Entry) Panic(args ...any) {
 	entry.log(PanicLevel, args...)
 }
 
 // Formatted logging methods
 
-// Tracef logs a formatted message at trace level.
+// Tracef logs a formatted message at trace Level.
 func (entry *Entry) Tracef(format string, args ...any) {
 	entry.logf(TraceLevel, format, args...)
 }
 
-// Debugf logs a formatted message at debug level.
+// Debugf logs a formatted message at debug Level.
 func (entry *Entry) Debugf(format string, args ...any) {
 	entry.logf(DebugLevel, format, args...)
 }
 
-// Infof logs a formatted message at info level.
+// Infof logs a formatted message at info Level.
 func (entry *Entry) Infof(format string, args ...any) {
 	entry.logf(InfoLevel, format, args...)
 }
 
-// Printf logs a formatted message at info level (alias for Infof).
+// Printf logs a formatted message at info Level (alias for Infof).
 func (entry *Entry) Printf(format string, args ...any) {
 	entry.Infof(format, args...)
 }
 
-// Warnf logs a formatted message at warning level.
+// Warnf logs a formatted message at warning Level.
 func (entry *Entry) Warnf(format string, args ...any) {
 	entry.logf(WarnLevel, format, args...)
 }
 
-// Warningf logs a formatted message at warning level (alias for Warnf).
+// Warningf logs a formatted message at warning Level (alias for Warnf).
 func (entry *Entry) Warningf(format string, args ...any) {
 	entry.Warnf(format, args...)
 }
 
-// Errorf logs a formatted message at error level.
+// Errorf logs a formatted message at error Level.
 func (entry *Entry) Errorf(format string, args ...any) {
 	entry.logf(ErrorLevel, format, args...)
 }
 
-// Fatalf logs a formatted message at fatal level and exits the program.
+// Fatalf logs a formatted message at fatal Level and exits the program.
 func (entry *Entry) Fatalf(format string, args ...any) {
 	entry.logf(FatalLevel, format, args...)
 }
 
-// Panicf logs a formatted message at panic level and panics.
+// Panicf logs a formatted message at panic Level and panics.
 func (entry *Entry) Panicf(format string, args ...any) {
 	entry.logf(PanicLevel, format, args...)
 }
 
 // Line logging methods
 
-// Traceln logs a message at trace level with newline handling.
+// Traceln logs a message at trace Level with newline handling.
 func (entry *Entry) Traceln(args ...any) {
 	entry.logln(TraceLevel, args...)
 }
 
-// Debugln logs a message at debug level with newline handling.
+// Debugln logs a message at debug Level with newline handling.
 func (entry *Entry) Debugln(args ...any) {
 	entry.logln(DebugLevel, args...)
 }
 
-// Infoln logs a message at info level with newline handling.
+// Infoln logs a message at info Level with newline handling.
 func (entry *Entry) Infoln(args ...any) {
 	entry.logln(InfoLevel, args...)
 }
 
-// Println logs a message at info level with newline handling (alias for Infoln).
+// Println logs a message at info Level with newline handling (alias for Infoln).
 func (entry *Entry) Println(args ...any) {
 	entry.Infoln(args...)
 }
 
-// Warnln logs a message at warning level with newline handling.
+// Warnln logs a message at warning Level with newline handling.
 func (entry *Entry) Warnln(args ...any) {
 	entry.logln(WarnLevel, args...)
 }
 
-// Warningln logs a message at warning level with newline handling (alias for Warnln).
+// Warningln logs a message at warning Level with newline handling (alias for Warnln).
 func (entry *Entry) Warningln(args ...any) {
 	entry.Warnln(args...)
 }
 
-// Errorln logs a message at error level with newline handling.
+// Errorln logs a message at error Level with newline handling.
 func (entry *Entry) Errorln(args ...any) {
 	entry.logln(ErrorLevel, args...)
 }
 
-// Fatalln logs a message at fatal level with newline handling and exits the program.
+// Fatalln logs a message at fatal Level with newline handling and exits the program.
 func (entry *Entry) Fatalln(args ...any) {
 	entry.logln(FatalLevel, args...)
 }
 
-// Panicln logs a message at panic level with newline handling and panics.
+// Panicln logs a message at panic Level with newline handling and panics.
 func (entry *Entry) Panicln(args ...any) {
 	entry.logln(PanicLevel, args...)
+}
+
+// Writer returns an io.Writer that writes to the logger at the info log Level.
+func (entry *Entry) Writer() *io.PipeWriter {
+	return entry.WriterLevel(InfoLevel)
+}
+
+// WriterLevel returns an io.Writer that writes to the logger at the given log Level.
+func (entry *Entry) WriterLevel(level Level) *io.PipeWriter {
+	reader, writer := io.Pipe()
+
+	var printFunc func(args ...any)
+
+	switch level {
+	case TraceLevel:
+		printFunc = entry.Trace
+	case DebugLevel:
+		printFunc = entry.Debug
+	case InfoLevel:
+		printFunc = entry.Info
+	case WarnLevel:
+		printFunc = entry.Warn
+	case ErrorLevel:
+		printFunc = entry.Error
+	case FatalLevel:
+		printFunc = entry.Fatal
+	case PanicLevel:
+		printFunc = entry.Panic
+	default:
+		printFunc = entry.Print
+	}
+
+	go entry.writerScanner(reader, printFunc)
+
+	runtime.SetFinalizer(writer, writerFinalizer)
+
+	return writer
+}
+
+// writerScanner scans the input from the reader and writes it to the logger.
+func (entry *Entry) writerScanner(reader *io.PipeReader, printFunc func(args ...any)) {
+	scanner := bufio.NewScanner(reader)
+
+	// Use a reasonable buffer size for scanning
+	scanner.Buffer(make([]byte, bufio.MaxScanTokenSize), bufio.MaxScanTokenSize)
+
+	for scanner.Scan() {
+		printFunc(scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		entry.Error("Error while reading from Writer: ", err)
+	}
+
+	reader.Close()
+}
+
+// writerFinalizer is called when the writer is garbage collected.
+func writerFinalizer(writer *io.PipeWriter) {
+	writer.Close()
 }

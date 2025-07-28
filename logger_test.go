@@ -1,4 +1,4 @@
-package slogrus
+package logrus
 
 import (
 	"bytes"
@@ -14,8 +14,8 @@ func TestNew(t *testing.T) {
 		t.Error("New() returned nil")
 		return
 	}
-	if logger.level != InfoLevel {
-		t.Errorf("New() logger level = %v, want %v", logger.level, InfoLevel)
+	if logger.Level != InfoLevel {
+		t.Errorf("New() logger Level = %v, want %v", logger.Level, InfoLevel)
 	}
 }
 
@@ -28,8 +28,8 @@ func TestNewWithHandler(t *testing.T) {
 		t.Error("NewWithHandler() returned nil")
 		return
 	}
-	if logger.level != InfoLevel {
-		t.Errorf("NewWithHandler() logger level = %v, want %v", logger.level, InfoLevel)
+	if logger.Level != InfoLevel {
+		t.Errorf("NewWithHandler() logger Level = %v, want %v", logger.Level, InfoLevel)
 	}
 }
 
@@ -37,8 +37,8 @@ func TestLoggerSetLevel(t *testing.T) {
 	logger := New()
 	logger.SetLevel(DebugLevel)
 
-	if logger.GetLevel() != DebugLevel {
-		t.Errorf("GetLevel() = %v, want %v", logger.GetLevel(), DebugLevel)
+	if logger.Level != DebugLevel {
+		t.Errorf("GetLevel() = %v, want %v", logger.Level, DebugLevel)
 	}
 }
 

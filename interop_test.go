@@ -1,4 +1,4 @@
-package slogrus
+package logrus
 
 import (
 	"bytes"
@@ -101,11 +101,11 @@ func TestInteroperability(t *testing.T) {
 	}
 }
 
-// TestFromSlogLoggerLevelHandling tests level handling with FromSlogLogger
+// TestFromSlogLoggerLevelHandling tests Level handling with FromSlogLogger
 func TestFromSlogLoggerLevelHandling(t *testing.T) {
 	var buf bytes.Buffer
 
-	// Create slog logger with Warn level
+	// Create slog logger with Warn Level
 	handler := slog.NewTextHandler(&buf, &slog.HandlerOptions{
 		Level: slog.LevelWarn,
 	})
