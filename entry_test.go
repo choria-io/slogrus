@@ -15,6 +15,7 @@ func TestNewEntry(t *testing.T) {
 
 	if entry == nil {
 		t.Error("NewEntry() returned nil")
+		return
 	}
 	if entry.logger != logger {
 		t.Error("NewEntry() did not set logger correctly")
@@ -34,6 +35,7 @@ func TestEntryWithField(t *testing.T) {
 
 	if entry2 == nil {
 		t.Error("WithField() returned nil")
+		return
 	}
 	if entry2 == entry {
 		t.Error("WithField() should return a new entry, not modify the original")
@@ -54,6 +56,7 @@ func TestEntryWithFields(t *testing.T) {
 
 	if entry2 == nil {
 		t.Error("WithFields() returned nil")
+		return
 	}
 	if entry2 == entry {
 		t.Error("WithFields() should return a new entry, not modify the original")
@@ -72,11 +75,14 @@ func TestEntryWithFields(t *testing.T) {
 func TestEntryWithContext(t *testing.T) {
 	logger := New()
 	entry := NewEntry(logger)
-	ctx := context.WithValue(context.Background(), "test", "value")
+	type testKeyType string
+	const testKey testKeyType = "test"
+	ctx := context.WithValue(context.Background(), testKey, "value")
 	entry2 := entry.WithContext(ctx)
 
 	if entry2 == nil {
 		t.Error("WithContext() returned nil")
+		return
 	}
 	if entry2 == entry {
 		t.Error("WithContext() should return a new entry, not modify the original")
@@ -94,6 +100,7 @@ func TestEntryWithError(t *testing.T) {
 
 	if entry2 == nil {
 		t.Error("WithError() returned nil")
+		return
 	}
 	if entry2 == entry {
 		t.Error("WithError() should return a new entry, not modify the original")
@@ -114,6 +121,7 @@ func TestEntryWithTime(t *testing.T) {
 
 	if entry2 == nil {
 		t.Error("WithTime() returned nil")
+		return
 	}
 	if entry2 == entry {
 		t.Error("WithTime() should return a new entry, not modify the original")
