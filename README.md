@@ -276,28 +276,28 @@ See the test files for comprehensive usage examples:
 
 This was written with a focus on performance and low allocations, extensive benchmarks are included:
 
-```
-BenchmarkLoggerInfo-12                           1907768               617.4 ns/op            16 B/op          1 allocs/op
-BenchmarkLoggerInfof-12                          1743793               692.6 ns/op            32 B/op          1 allocs/op
-BenchmarkLoggerInfoln-12                         1906810               639.4 ns/op            16 B/op          1 allocs/op
-BenchmarkLoggerWithField-12                      1000000              1014 ns/op             528 B/op          6 allocs/op
-BenchmarkLoggerWithFieldf-12                     1000000              1090 ns/op             544 B/op          7 allocs/op
-BenchmarkLoggerWithFields-12                      930514              1269 ns/op             608 B/op          6 allocs/op
-BenchmarkLoggerWithFieldChaining-12               772938              1551 ns/op            1289 B/op         11 allocs/op
-BenchmarkLoggerDebugDisabled-12                 494086148                2.428 ns/op           0 B/op          0 allocs/op
-BenchmarkLoggerWithFieldDebugDisabled-12         6154128               202.3 ns/op           464 B/op          4 allocs/op
-BenchmarkGlobalInfo-12                           1899432               633.5 ns/op            16 B/op          1 allocs/op
-BenchmarkGlobalWithField-12                      1000000              1073 ns/op             528 B/op          6 allocs/op
-BenchmarkLoggerInfoJSON-12                       2346199               508.7 ns/op            16 B/op          1 allocs/op
-BenchmarkLoggerWithFieldJSON-12                  1336527               888.2 ns/op           528 B/op          6 allocs/op
-BenchmarkLoggerWithError-12                       931095              1225 ns/op             544 B/op          7 allocs/op
-BenchmarkComplexLogging-12                        586546              1962 ns/op             881 B/op          7 allocs/op
-BenchmarkMemoryAllocation/DirectLog-12           1874785               637.9 ns/op            16 B/op          1 allocs/op
-BenchmarkMemoryAllocation/WithOneField-12        1000000              1072 ns/op             536 B/op          6 allocs/op
-BenchmarkMemoryAllocation/WithThreeFields-12              750601              1572 ns/op            1297 B/op         10 allocs/op
-BenchmarkMemoryAllocation/WithFieldsMap-12                934754              1342 ns/op             616 B/op          6 allocs/op
-BenchmarkThroughput-12                                   1874892               607.6 ns/op         1.65 MB/s         750 B/op          6 allocs/op
-BenchmarkLevelCheck-12                                  1000000000               0.3733 ns/op          0 B/op          0 allocs/op
-BenchmarkFromSlogLogger-12                               1820745               657.6 ns/op            24 B/op          1 allocs/op
-BenchmarkGetSlogLogger-12                                2019850               597.1 ns/op             0 B/op          0 allocs/op
-```
+| Benchmark                        | Iterations    | Time per Op  | Bytes per Op         | Allocs per Op |
+|----------------------------------|---------------|--------------|----------------------|---------------|
+| LoggerInfo                       | 1,907,768     | 617.4 ns/op  | 16 B/op              | 1 allocs/op   |
+| LoggerInfof                      | 1,743,793     | 692.6 ns/op  | 32 B/op              | 1 allocs/op   |
+| LoggerInfoln                     | 1,906,810     | 639.4 ns/op  | 16 B/op              | 1 allocs/op   |
+| LoggerWithField                  | 1,000,000     | 1,014 ns/op  | 528 B/op             | 6 allocs/op   |
+| LoggerWithFieldf                 | 1,000,000     | 1,090 ns/op  | 544 B/op             | 7 allocs/op   |
+| LoggerWithFields                 | 930,514       | 1,269 ns/op  | 608 B/op             | 6 allocs/op   |
+| LoggerWithFieldChaining          | 772,938       | 1,551 ns/op  | 1,289 B/op           | 11 allocs/op  |
+| LoggerDebugDisabled              | 494,086,148   | 2.428 ns/op  | 0 B/op               | 0 allocs/op   |
+| LoggerWithFieldDebugDisabled     | 6,154,128     | 202.3 ns/op  | 464 B/op             | 4 allocs/op   |
+| GlobalInfo                       | 1,899,432     | 633.5 ns/op  | 16 B/op              | 1 allocs/op   |
+| GlobalWithField                  | 1,000,000     | 1,073 ns/op  | 528 B/op             | 6 allocs/op   |
+| LoggerInfoJSON                   | 2,346,199     | 508.7 ns/op  | 16 B/op              | 1 allocs/op   |
+| LoggerWithFieldJSON              | 1,336,527     | 888.2 ns/op  | 528 B/op             | 6 allocs/op   |
+| LoggerWithError                  | 931,095       | 1,225 ns/op  | 544 B/op             | 7 allocs/op   |
+| ComplexLogging                   | 586,546       | 1,962 ns/op  | 881 B/op             | 7 allocs/op   |
+| MemoryAllocation/DirectLog       | 1,874,785     | 637.9 ns/op  | 16 B/op              | 1 allocs/op   |
+| MemoryAllocation/WithOneField    | 1,000,000     | 1,072 ns/op  | 536 B/op             | 6 allocs/op   |
+| MemoryAllocation/WithThreeFields | 750,601       | 1,572 ns/op  | 1,297 B/op           | 10 allocs/op  |
+| MemoryAllocation/WithFieldsMap   | 934,754       | 1,342 ns/op  | 616 B/op             | 6 allocs/op   |
+| Throughput                       | 1,874,892     | 607.6 ns/op  | 750 B/op (1.65 MB/s) | 6 allocs/op   |
+| LevelCheck                       | 1,000,000,000 | 0.3733 ns/op | 0 B/op               | 0 allocs/op   |
+| FromSlogLogger                   | 1,820,745     | 657.6 ns/op  | 24 B/op              | 1 allocs/op   |
+| GetSlogLogger                    | 2,019,850     | 597.1 ns/op  | 0 B/op               | 0 allocs/op   |
