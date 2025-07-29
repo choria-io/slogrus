@@ -3,7 +3,7 @@
 A drop-in replacement for [logrus](https://github.com/sirupsen/logrus) that uses Go's standard `log/slog` package under the hood. This library provides a migration path for projects that want to move from logrus to Go's structured logging without changing their existing code or to facilitate a gradual migration.
 
 > [!NOTE]
-> This project was almost entirely created by Claude Code
+> Claude Code almost entirely created this project. It is an experiment to see how this might solve the migration problem. Using this I migrated the entire `go-choria` code base in less than a hour with no code changes.
 
 ## Goals
 
@@ -271,3 +271,33 @@ See the test files for comprehensive usage examples:
 - `logger_test.go` - Logger-specific tests  
 - `entry_test.go` - Entry and structured logging tests
 - `init_test.go` - Initialization and global function tests
+
+## Benchmarks
+
+This was written with a focus on performance and low allocations, extensive benchmarks are included:
+
+```
+BenchmarkLoggerInfo-12                           1907768               617.4 ns/op            16 B/op          1 allocs/op
+BenchmarkLoggerInfof-12                          1743793               692.6 ns/op            32 B/op          1 allocs/op
+BenchmarkLoggerInfoln-12                         1906810               639.4 ns/op            16 B/op          1 allocs/op
+BenchmarkLoggerWithField-12                      1000000              1014 ns/op             528 B/op          6 allocs/op
+BenchmarkLoggerWithFieldf-12                     1000000              1090 ns/op             544 B/op          7 allocs/op
+BenchmarkLoggerWithFields-12                      930514              1269 ns/op             608 B/op          6 allocs/op
+BenchmarkLoggerWithFieldChaining-12               772938              1551 ns/op            1289 B/op         11 allocs/op
+BenchmarkLoggerDebugDisabled-12                 494086148                2.428 ns/op           0 B/op          0 allocs/op
+BenchmarkLoggerWithFieldDebugDisabled-12         6154128               202.3 ns/op           464 B/op          4 allocs/op
+BenchmarkGlobalInfo-12                           1899432               633.5 ns/op            16 B/op          1 allocs/op
+BenchmarkGlobalWithField-12                      1000000              1073 ns/op             528 B/op          6 allocs/op
+BenchmarkLoggerInfoJSON-12                       2346199               508.7 ns/op            16 B/op          1 allocs/op
+BenchmarkLoggerWithFieldJSON-12                  1336527               888.2 ns/op           528 B/op          6 allocs/op
+BenchmarkLoggerWithError-12                       931095              1225 ns/op             544 B/op          7 allocs/op
+BenchmarkComplexLogging-12                        586546              1962 ns/op             881 B/op          7 allocs/op
+BenchmarkMemoryAllocation/DirectLog-12           1874785               637.9 ns/op            16 B/op          1 allocs/op
+BenchmarkMemoryAllocation/WithOneField-12        1000000              1072 ns/op             536 B/op          6 allocs/op
+BenchmarkMemoryAllocation/WithThreeFields-12              750601              1572 ns/op            1297 B/op         10 allocs/op
+BenchmarkMemoryAllocation/WithFieldsMap-12                934754              1342 ns/op             616 B/op          6 allocs/op
+BenchmarkThroughput-12                                   1874892               607.6 ns/op         1.65 MB/s         750 B/op          6 allocs/op
+BenchmarkLevelCheck-12                                  1000000000               0.3733 ns/op          0 B/op          0 allocs/op
+BenchmarkFromSlogLogger-12                               1820745               657.6 ns/op            24 B/op          1 allocs/op
+BenchmarkGetSlogLogger-12                                2019850               597.1 ns/op             0 B/op          0 allocs/op
+```
